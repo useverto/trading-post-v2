@@ -79,6 +79,7 @@ export async function loadConfig(loc: string): Promise<TradingPostConfig> {
     let config: TradingPostConfig = JSON.parse(
       await readFile(loc, { encoding: "utf8" })
     );
+    config = applyEnvironmentVariables(config);
     validateConfig(config);
     log.info(`Loaded config file from ${loc}`);
     return config;
@@ -86,6 +87,26 @@ export async function loadConfig(loc: string): Promise<TradingPostConfig> {
     log.error(`Failed to deserialize trading post config: ${e}`);
     process.exit(1);
   }
+}
+
+/**
+ * Override config properties with their
+ * corresponding environment variables, if set
+ * @param config The config to apply the environment variables to
+ */
+function applyEnvironmentVariables(
+  config: TradingPostConfig
+): TradingPostConfig {
+  if (config.genesis.chain?.ETH) {
+    config.genesis.chain.ETH.addr =
+      process.env.ETH_ADDRESS || config.genesis.chain.ETH.addr;
+  }
+
+  config.genesis.tradeFee =
+    Number(process.env.TRADE_FEE) || config.genesis.tradeFee;
+  config.genesis.publicURL = process.env.PUBLIC_URL || config.genesis.publicURL;
+
+  return config;
 }
 
 /**

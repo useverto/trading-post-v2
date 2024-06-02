@@ -5,6 +5,9 @@
       "usjm4PCxUd5mtaon7zc97-dt-3qf67yPyqgzLnLqk5A",
       "FcM-QQpfcD0xTTzr8u4Su9QCgcvRx_JH4JSCQoFi6Ck"
     ],
+    "chain": {
+      "ETH": { "addr": "" }
+    },
     "tradeFee": 0.01,
     "publicURL": "your-trading-post-domain.com",
     "version": "0.3.0"
